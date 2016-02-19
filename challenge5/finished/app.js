@@ -1,7 +1,6 @@
 var express = require('express'), 
     http = require('http'), 
-    path = require('path')
-    io = require('socket.io');
+    path = require('path');
 
 var app = express();
 
@@ -25,8 +24,9 @@ var io = require('socket.io').listen(server);
 // Handle socket traffic
 io.sockets.on('connection', function (socket) {
     
-    // Set the nickname property for a given client
+    //Set the nickname property for a given client
     socket.on('nick', function(nick) {
+        //store nick on the socket object
         socket.set('nickname', nick);
     });
 
@@ -41,7 +41,17 @@ io.sockets.on('connection', function (socket) {
             };
 
             socket.emit('chat',payload);
+            //send to other sockets
             socket.broadcast.emit('chat', payload);
         });
     });
 });
+
+//Install ngrok
+
+//my domain is mmj.ngrok.io
+//ngrok http -subdomain=mmj 3000
+
+//inspector: 
+//http://localhost:4040
+//http://localhost:4040/inspect/http
